@@ -1,0 +1,27 @@
+{
+  "name": "pdv-api",
+  "version": "1.0.0",
+  "description": "This application was created for studying purposes.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Thiago Puntar",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-async-errors": "^3.1.1",
+    "mongoose": "^8.2.1"
+  }
+}
