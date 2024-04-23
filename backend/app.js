@@ -4,15 +4,21 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const userRouter = require('./routes/users');
+const authMiddleware = require('./middlewares/auth');
+const { login, saveUser } = require('./controllers/user');
 
 const app = express();
 const port = 3000;
 
-app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+app.use(express.json());
 
+app.post('/api/login', login);
+app.post('/api/signup', saveUser);
+
+app.use(authMiddleware);
 app.use('/api', userRouter);
 
 app.use((err, req, res, next) => {
@@ -25,7 +31,7 @@ app.listen(port, () => {
 });
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(process.env.DB_CONNECTION);
 }
 
 main()

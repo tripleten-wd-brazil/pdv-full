@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
@@ -36,9 +37,21 @@ module.exports.saveUser = async (req, res) => {
     });
 };
 
-// module.exports.login = (req, res) => {
-//   const { email, password } = req.body;
-//   User.find({ email }).then((user) => {
-//
-//   });
-// }
+module.exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email }).select('+password').exec();
+  if (!user) {
+    return res.status(401).json('Invalid email or password');
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    return res.status(401).json('Invalid email or password');
+  }
+
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '7d',
+  });
+
+  return res.json({ token });
+};
